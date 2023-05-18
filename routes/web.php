@@ -25,7 +25,7 @@ Route::middleware(['auth','verified'])->prefix('admin')->name('admin.')->group(f
     // inseriammo la dashboard sotto l'autenticazione
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('admin/projects', ProjectController::class);
-
+    Route::resource('projects', ProjectController::class)->parameters(['projects'=>'project:slug']);
 });
 
 require __DIR__.'/auth.php';

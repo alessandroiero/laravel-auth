@@ -5,10 +5,28 @@
 
     <div class="d-flex justify-content-between align-items-center">
         <h2 class="fs-4 text-secondary my-4">
-            Lista dei post
+            Lista Progetti
         </h2>
-        <a href="{{ route('admin.projects.create') }}" class="btn btn-primary">Crea Post</a>
+        {{-- bottone crea --}}
+        <a href="{{ route('admin.projects.create') }}" class="btn btn-primary">Crea Progetto</a>
     </div>
+
+    {{-- if message --}}
+    @if (session('message'))
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="me-auto">Notification</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            {{ session('message') }}
+          </div>
+        </div>
+      </div>
+    @endif
+    {{-- /if message --}}
+
     {{-- tabella --}}
     <table class="table">
         <thead>
@@ -45,7 +63,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Sei sicuro di voler cancellare il post con id <strong>{{ $project->id }}</strong>?
+                        Sei sicuro di voler cancellare il progetto con id <strong>{{ $project->id }}</strong>?
                     </div>
                     <div class="modal-footer">
                         <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">

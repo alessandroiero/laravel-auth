@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Illuminate\Support\Str;
 
 use App\Models\Project;
 
@@ -30,7 +31,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.projects.create');
     }
 
     /**
@@ -41,7 +42,13 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        $data = $request->validated();
+        $post = new Project();
+        $post->slug =  Str::slug($data['title']);
+        $post->fill($data);
+        $post->save();
+
+        return redirect()->route('admin.projects.index')->with('message', 'Nuovo Progetto Creato');
     }
 
     /**
@@ -52,7 +59,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        return view('admin.projects.show', compact('project'));
     }
 
     /**
@@ -63,7 +70,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -75,7 +82,11 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $data = $request->validated();
+        $project->slug =  Str::slug($data['title']);
+        $project->update($data);
+
+        return redirect()->route('admin.projects.index')->with('message', "Il $project->id progetto è aggiornato");
     }
 
     /**
@@ -86,6 +97,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $old_id = $project->id;
+        $project->delete();
+
+        return redirect()->route('admin.projects.index')->with('message', "Il $old_id Progetto è stato Cancellato");
     }
 }
