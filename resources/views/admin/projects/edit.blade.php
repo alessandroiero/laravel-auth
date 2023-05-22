@@ -17,8 +17,8 @@
     {{-- validazione errori --}}
     
     
-
-    <form action="{{ route('admin.projects.update', $project) }}" method="POST">
+    {{-- per inserire immagini mettiamo l'enctype enctype="multipart/form-data" --}}
+    <form action="{{ route('admin.projects.update', $project) }}" method="POST" enctype="multipart/form-data" class="form-input-image">
         @csrf
         @method('PUT')
         <div class="mb-3">
@@ -29,6 +29,18 @@
           <label for="content" class="form-label">Content</label>
           <textarea class="form-control" id="content" name="content">{{ old('content', $project->content) }}</textarea>
         </div>
+        
+        {{-- immagini --}}
+        <div class="mb-3 @if(!$project->image) d-none @endif"  id="image-input-container">
+          {{-- preview immagine --}}
+          <div class="preview">
+              <img id="file-image-preview" @if($project->image) src="{{ asset('storage/' . $project->image) }}" @endif>
+          </div>
+          <label for="image" class="form-label py-4">IMG</label>
+          <input class="form-control" type="file" id="image" name="image">
+        </div>
+        {{-- /immagini --}}
+
         <button type="submit" class="btn btn-primary">Edit</button>
       </form>
 

@@ -42,6 +42,7 @@
             <tr>
                 <th scope="row">{{ $project->id }}</th>
                 <td>{{ $project->title }}</td>
+                <td>@if($project->image) <a href="#" class="btn btn-sm btn-secondary">img</a> @endif {{ $project->title }}</td>
                 <td>{{ $project->slug }}</td>
                 <td>
                     <ul class="list-unstyled d-flex m-0 gap-1 justify-content-end">

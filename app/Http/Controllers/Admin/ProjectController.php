@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\Support\Str;
 
 use App\Models\Project;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -43,10 +44,17 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         $data = $request->validated();
-        $post = new Project();
-        $post->slug =  Str::slug($data['title']);
-        $post->fill($data);
-        $post->save();
+        $project = new Project();
+        $project->slug =  Str::slug($data['title']);
+        $project->fill($data);
+
+        // immagine
+        $project->slug =  Str::slug($data['title']);
+        if (isset($data['image'])) {
+            $project->image = Storage::put('uploads', $data['image']);
+        }
+        // immagine
+        $project->save();
 
         return redirect()->route('admin.projects.index')->with('message', 'Nuovo Progetto Creato');
     }
@@ -84,6 +92,12 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
         $project->slug =  Str::slug($data['title']);
+
+        // immagine
+        if (isset($data['image'])) {
+            $project->image = Storage::put('uploads', $data['image']);
+        }
+        // immagine
         $project->update($data);
 
         return redirect()->route('admin.projects.index')->with('message', "Il $project->id progetto è aggiornato");
@@ -98,6 +112,10 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $old_id = $project->id;
+        
+        if($project->image){
+            Storage::delete($project->image);
+        }
         $project->delete();
 
         return redirect()->route('admin.projects.index')->with('message', "Il $old_id Progetto è stato Cancellato");
