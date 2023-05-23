@@ -17,7 +17,7 @@
     {{-- validazione errori --}}
 
     {{-- per inserire immagini mettiamo l'enctype enctype="multipart/form-data" --}}
-    <form action="{{ route('admin.projects.store', $project) }}" method="POST" enctype="multipart/form-data" class="form-input-image">
+    <form action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data" class="form-input-image">
         {{-- token laravel form --}}
         @csrf
         {{-- token --}}
